@@ -1,5 +1,6 @@
 import axios from 'axios';
 import './App.css';
+import leaf from './leaf.svg';
 import {useState, useEffect} from 'react';
 import { Button, SaltProvider, H3, Text, useTheme, AccordionPanel, AccordionHeader, Card, StackLayout, FlexItem, FlexLayout, Accordion } from '@salt-ds/core';
 
@@ -134,16 +135,7 @@ function App() {
   linear-gradient(180deg, #FFF36A 0%, #E0B800 100%)
 `,
     
-    "Grass": `repeating-linear-gradient(90deg, 
-              transparent 0px,
-              transparent 10px,
-              ${typeColors2.Grass}80 10px,
-              ${typeColors2.Grass}80 12px),
-              repeating-linear-gradient(0deg,
-              transparent 0px,
-              transparent 10px,
-              ${typeColors2.Grass}80 10px,
-              ${typeColors2.Grass}80 12px)`,
+    "Grass": `radial-gradient(${leaf} at 20% 20%, #5A8F3A 4px, transparent 5px)`,
     
     "Ice": `repeating-linear-gradient(45deg, ${typeColors2.Ice}4D 0px, ${typeColors.Ice}4D 2px, transparent 2px, transparent 4px)`,
     
