@@ -1,12 +1,13 @@
 import axios from 'axios';
 import './App.css';
 import leaf from './leaf.svg';
-import {useState, useEffect} from 'react';
-import { Button, SaltProvider, H3, Text, useTheme, AccordionPanel, AccordionHeader, Card, StackLayout, FlexItem, FlexLayout, Accordion } from '@salt-ds/core';
-
+import {useEffect, useState} from 'react';
+import { Button, Text, 
+Card, StackLayout, FlexItem, FlexLayout, CompactPaginator, Pagination, Spinner } from '@salt-ds/core';
 function App() {
   const [data, setData] = useState(null);
   const [image, setImage] = useState({});
+  const [offset, setOffset] = useState(1);
 
   const typeColors = {
     "Normal":   "#A8A77A",
@@ -31,7 +32,7 @@ function App() {
 
   const fetchData = () => {
     axios
-      .get("https://pokeapi.co/api/v2/pokemon?limit=10&offset=0")
+      .get(`https://pokeapi.co/api/v2/pokemon?limit=${2}&offset=${(offset-1) *2}`)
       .then((response) => {
         console.log(response.status, response);
         response?.data?.results?.map(item => pokemonInfo(item.url, item.name));
@@ -52,7 +53,8 @@ function App() {
             height: response.data.height,
             weight: response.data.weight,
             types: response.data.types,
-            stats: response.data.stats
+            stats: response.data.stats,
+            id: response.data.id
           }
         }));
       })
@@ -223,6 +225,12 @@ function App() {
     return word.charAt(0).toUpperCase() + word.slice(1);
   };
 
+  useEffect(() => {
+    setData(null);
+    console.log("Offset changed:", offset, offset + 5);
+    fetchData();
+  }, [offset]);
+
   return (
     <div>
     <Card style={{ minHeight: "unset" }}>
@@ -232,7 +240,7 @@ function App() {
           appearance="solid"
           sentiment='accented'
           onClick={()=>fetchData()}>Load Data</Button>
-        {data && (
+        {data ? (
           <FlexLayout direction={"row"} gap={2} wrap>
               
               {data.map((item, index) => (
@@ -274,7 +282,7 @@ function App() {
                 />
                   <StackLayout padding={0} gap={1}>
                     <Text styleAs='display3' style={{color: "black"}}>
-                      {`${index+1}: ${capitalizeFirstLetter(item?.name)}`}
+                      {`${pokemonData[item?.name]?.id}: ${capitalizeFirstLetter(item?.name)}`}
                       </Text>
 
                   </StackLayout>
@@ -312,9 +320,16 @@ function App() {
                 )) }
                           
           </FlexLayout>
+        ) : (
+          <Spinner aria-label="loading" role="status" size="large" />
         )}
+              <Pagination defaultPage={1} page={offset} onPageChange={(event: SyntheticEvent, page: number) => setOffset(page)} count={20}>
+        <CompactPaginator />
+      </Pagination>
        </StackLayout>
+       
     </Card>
+
     </div>
   );
 }
