@@ -1,7 +1,7 @@
 {
   "name": "my-react-app",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
   "dependencies": {
     "@fontsource/open-sans": "^5.1.0",
     "@fontsource/pt-mono": "^5.1.0",
